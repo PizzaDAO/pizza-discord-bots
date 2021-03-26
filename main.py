@@ -6,6 +6,7 @@ import logging
 from dotenv import load_dotenv
 from discord.ext import commands
 
+
 DEFAULT_NAME = "Pizza Trainee"
 AVATAR_CSV_FILE = "data/csv_files/avatars.csv"
 AVATAR_IMGS_FILE_DIR = "data/images/"
@@ -24,7 +25,6 @@ intents.members = True
 desc = "Download Avatar URLs via a CSV file or actual img files" # csv is recommended to not spam discord chan
 bot = commands.Bot(command_prefix='$', description=desc, intents=intents)
 
-
 def get_member_data(member):
   # name,nickname,roles,top_role,avatar_url
   data = [member.name,  member.nick] 
@@ -38,23 +38,6 @@ def create_csv_file(data, filename=AVATAR_CSV_FILE):
     writer = csv.writer(file)
     writer.writerows(data)
   return 
-  
-async def extract_files_from_urls(urls):
-  files = []
-  for idx, url in enumerate(urls, start=1): 
-    filename = AVATAR_IMGS_FILE_DIR + "avatar_{0}.jpg".format(idx)
-    await url.save(filename)
-    files.append(discord.File(fp=filename))
-  return files
-
-async def send_files(ctx, files):
-  send_files_limit = 10
-  num_files = len(files)
-  for i in range(0, num_files, send_files_limit):
-    start = i + 1
-    end = i + send_files_limit 
-    if end >= num_files: end = num_files
-    await ctx.channel.send("Avatar Files {0} through {1} of {2}".format(start, end, num_files), files=files[i:end])
 
 @bot.event
 async def on_ready():
@@ -71,10 +54,11 @@ async def on_member_join(member):
   for c in member.guild.channels:
     if "noob-chat" in str(c):
       await c.send("Welcome to the pizza party, {0} ({1})!]".format(member.nick, prev_name))
+      return 
 
 @bot.command(name="avatars")
-async def download_avatars(ctx, content_type="csv"):
-  logger.info("downloading avatars as {0}".format(content_type))
+async def download_avatars(ctx):
+  logger.info("downloading file '{0}'".format(AVATAR_CSV_FILE))
   csv_data = []
   csv_cols = ["name","nickname","roles","top_role","avatar_url"]
   csv_data.append(csv_cols)
@@ -84,15 +68,8 @@ async def download_avatars(ctx, content_type="csv"):
     row = get_member_data(m)
     csv_data.append(row)
 
-  if content_type in ["csv", "urls"]:
-    create_csv_file(csv_data, AVATAR_CSV_FILE)
-    await ctx.send(file=discord.File(AVATAR_CSV_FILE))
-    return 
-
-  data = csv_data[1:] # remove header rows
-  urls = list(filter(lambda x: x != "", map(lambda row: row[-1], data))) # extract non empty avatar_url column values
-  avatar_files = await extract_files_from_urls(urls)
-  await send_files(ctx, avatar_files)
+  create_csv_file(csv_data, AVATAR_CSV_FILE)
+  await ctx.send(file=discord.File(AVATAR_CSV_FILE))
 
 @bot.command()
 async def member_count(ctx):
