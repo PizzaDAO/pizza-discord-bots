@@ -8,8 +8,7 @@ from discord.ext import commands
 
 
 DEFAULT_NAME = "Pizza Trainee"
-AVATAR_CSV_FILE = "data/csv_files/avatars.csv"
-AVATAR_IMGS_FILE_DIR = "data/images/"
+AVATAR_CSV_FILE = "temp/csv_files/avatars.csv"
 LOG_FILE = 'pizza_dao_discord.log'
 
 load_dotenv()
@@ -22,7 +21,7 @@ logger.addHandler(handler)
 
 intents = discord.Intents.default()
 intents.members = True
-desc = "Download Avatar URLs via a CSV file or actual img files" # csv is recommended to not spam discord chan
+desc = "Download a CSV file that contains Avatar URLs" 
 bot = commands.Bot(command_prefix='$', description=desc, intents=intents)
 
 def get_member_data(member):
