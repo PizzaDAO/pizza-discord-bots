@@ -5,11 +5,15 @@ import time
 import logging
 from dotenv import load_dotenv
 from discord.ext import commands
+from datetime import datetime
 
 
 DEFAULT_NAME = "Pizza Trainee"
 AVATAR_CSV_FILE = "temp/csv_files/avatars.csv"
 LOG_FILE = 'pizza_dao_discord.log'
+NOOB_CHAT_CHAN_ID = 814164220903161917
+JOIN_DA_MAFIA_CHAN_ID = 816405524572536832
+THRESHOLD = 1
 
 load_dotenv()
 
@@ -24,6 +28,8 @@ intents.members = True
 desc = "Download a CSV file that contains Avatar URLs" 
 bot = commands.Bot(command_prefix='$', description=desc, intents=intents)
 
+last_timestamp = datetime.now() # last time a member joined
+
 def get_member_data(member):
   # name,nickname,roles,top_role,avatar_url
   data = [member.name,  member.nick] 
@@ -36,7 +42,18 @@ def create_csv_file(data, filename=AVATAR_CSV_FILE):
   with open(filename, 'w', newline='') as file:
     writer = csv.writer(file)
     writer.writerows(data)
-  return 
+  return
+
+def add_channel_link(now):
+  """ calculates the time difference (in hours) since a new member joined
+  it returns true if that time difference is greater than THRESHOLD """
+
+  global last_timestamp
+  hours = (now - last_timestamp).total_seconds() / (60 * 60)
+  logger.info("it's been {0} hours since a member joined".format(hours))
+  
+  last_timestamp = now
+  return (hours >= THRESHOLD)
 
 @bot.event
 async def on_ready():
@@ -44,16 +61,17 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
+  now = datetime.now()
+
   prev_name = member.name
   await member.edit(nick=DEFAULT_NAME)
+  msg = "Welcome to the pizza party, {0}!".format(prev_name)
 
-  # sometimes member.nick is None so maybe sleep 
-  # to ensure changes are committed? todo: investigate this more
-  time.sleep(1) 
-  for c in member.guild.channels:
-    if "noob-chat" in str(c):
-      await c.send("Welcome to the pizza party, {0} ({1})!]".format(member.nick, prev_name))
-      return 
+  if add_channel_link(now):
+    msg += " Head over to <#{0}> to pick ur toitles then report here for ur mafia name".format(JOIN_DA_MAFIA_CHAN_ID)
+  
+  noob_chat_chan = bot.get_channel(NOOB_CHAT_CHAN_ID)
+  await noob_chat_chan.send(msg)
 
 @bot.command(name="avatars")
 async def download_avatars(ctx):
@@ -70,10 +88,10 @@ async def download_avatars(ctx):
   create_csv_file(csv_data, AVATAR_CSV_FILE)
   await ctx.send(file=discord.File(AVATAR_CSV_FILE))
 
-@bot.command()
+@bot.command(aliases=["mc"])
 async def member_count(ctx):
+  add_channel_link(datetime.now())
   logger.info("member count requested ({0})".format(ctx.guild.member_count))
   await ctx.channel.send("Total Members: {0}".format(ctx.guild.member_count))
-
 
 bot.run(os.getenv('TOKEN'))
