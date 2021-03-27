@@ -3,6 +3,7 @@ import os
 import csv
 import time
 import logging
+import random
 from dotenv import load_dotenv
 from discord.ext import commands
 from datetime import datetime
@@ -13,7 +14,17 @@ AVATAR_CSV_FILE = "temp/csv_files/avatars.csv"
 LOG_FILE = 'pizza_dao_discord.log'
 NOOB_CHAT_CHAN_ID = 814164220903161917
 JOIN_DA_MAFIA_CHAN_ID = 816405524572536832
-THRESHOLD = 1
+PIZZA_NUB_ROLE_ID = 814595921320869909
+THRESHOLD = 2 # hours
+WELCOME_MSGS = [
+  "Welcome to the pizza party, {0}!", 
+  "Glad you made it to the pizza party, {0}!", 
+  "Good to see you, {0}!",
+  "Welcome, {0}. We hope you brought pizza!",
+  "{0} just slid into the world's biggest pizza party!",
+  "{0} just showed up to the party!",
+  "A wild {0} appeared"
+]
 
 load_dotenv()
 
@@ -25,17 +36,16 @@ logger.addHandler(handler)
 
 intents = discord.Intents.default()
 intents.members = True
-desc = "Download a CSV file that contains Avatar URLs" 
-bot = commands.Bot(command_prefix='$', description=desc, intents=intents)
+bot = commands.Bot(command_prefix='$', intents=intents)
 
-last_timestamp = datetime.now() # last time a member joined
+last_timestamp = datetime.min # last time a member joined
 
 def get_member_data(member):
   # name,nickname,roles,top_role,avatar_url
   data = [member.name,  member.nick] 
-  data.append("|".join(list(map(lambda role: role.name, member.roles)))) if member.roles is not None else data.append("")
-  data.append(member.top_role) if member.top_role is not None else data.append("")
-  data.append(member.avatar_url) if member.avatar is not None else data.append("")
+  data.append("|".join(list(map(lambda role: role.name, member.roles))) if member.roles is not None else "")
+  data.append(member.top_role if member.top_role is not None else "")
+  data.append(member.avatar_url if member.avatar is not None else "")
   return data
 
 def create_csv_file(data, filename=AVATAR_CSV_FILE):
@@ -55,23 +65,25 @@ def add_channel_link(now):
   last_timestamp = now
   return (hours >= THRESHOLD)
 
+def get_new_member_msg(name):
+  now = datetime.now()
+  
+  msg = WELCOME_MSGS[random.randint(0, len(WELCOME_MSGS)-1)].format(name)
+  if add_channel_link(now):
+    msg += "\n<@&{0}>s Don't forget to head over to <#{1}> to pick ur toitles then report here for ur mafia name".format(PIZZA_NUB_ROLE_ID, JOIN_DA_MAFIA_CHAN_ID)
+  
+  return msg
+
 @bot.event
 async def on_ready():
-  logger.info("We have logged in as {0.user}".format(bot))
+  logger.info("logged in as {0.user}".format(bot))
 
 @bot.event
 async def on_member_join(member):
-  now = datetime.now()
-
-  prev_name = member.mention
+  logger.info("new member: {0} ({1})".format(member.name, member.mention))
   await member.edit(nick=DEFAULT_NAME)
-  msg = "Welcome to the pizza party, {0}!".format(prev_name)
-
-  if add_channel_link(now):
-    msg += "\nDon't forget to head over to <#{0}> to pick ur toitles then report here for ur mafia name".format(JOIN_DA_MAFIA_CHAN_ID)
-  
   noob_chat_chan = bot.get_channel(NOOB_CHAT_CHAN_ID)
-  await noob_chat_chan.send(msg)
+  await noob_chat_chan.send(get_new_member_msg(member.mention))
 
 @bot.command(name="avatars")
 async def download_avatars(ctx):
@@ -90,7 +102,8 @@ async def download_avatars(ctx):
 
 @bot.command(aliases=["mc"])
 async def member_count(ctx):
-  logger.info("member count requested ({0})".format(ctx.guild.member_count))
+  logger.info("member count at {0}".format(ctx.guild.member_count))
   await ctx.channel.send("Total Members: {0}".format(ctx.guild.member_count))
+
 
 bot.run(os.getenv('TOKEN'))
