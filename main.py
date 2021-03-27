@@ -63,12 +63,12 @@ async def on_ready():
 async def on_member_join(member):
   now = datetime.now()
 
-  prev_name = member.name
+  prev_name = member.mention
   await member.edit(nick=DEFAULT_NAME)
   msg = "Welcome to the pizza party, {0}!".format(prev_name)
 
   if add_channel_link(now):
-    msg += " Head over to <#{0}> to pick ur toitles then report here for ur mafia name".format(JOIN_DA_MAFIA_CHAN_ID)
+    msg += "\nDon't forget to head over to <#{0}> to pick ur toitles then report here for ur mafia name".format(JOIN_DA_MAFIA_CHAN_ID)
   
   noob_chat_chan = bot.get_channel(NOOB_CHAT_CHAN_ID)
   await noob_chat_chan.send(msg)
@@ -90,7 +90,6 @@ async def download_avatars(ctx):
 
 @bot.command(aliases=["mc"])
 async def member_count(ctx):
-  add_channel_link(datetime.now())
   logger.info("member count requested ({0})".format(ctx.guild.member_count))
   await ctx.channel.send("Total Members: {0}".format(ctx.guild.member_count))
 
