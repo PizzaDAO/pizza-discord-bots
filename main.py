@@ -5,7 +5,6 @@ import logging.config
 from dotenv import load_dotenv
 from os import path
 from discord.ext import commands
-from constants import LOG_FILE
 
 
 def main():

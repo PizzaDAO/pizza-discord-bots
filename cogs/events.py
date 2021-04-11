@@ -1,6 +1,4 @@
-import discord
 import logging
-import random
 from discord.ext import commands
 from datetime import datetime
 from constants import DEFAULT_NAME, JOIN_DA_MAFIA_CHAN_ID, NOOB_CHAT_CHAN_ID
