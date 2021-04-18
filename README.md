@@ -12,9 +12,9 @@ For Laszlo!
 
 - Run Docker Container
 
-```bash
-docker-compose up --build
-```
+    ```bash
+    docker-compose up --build
+    ```
 
 If you're new to docker, don't fret; check out [this guide](https://docs.docker.com/get-started/)
 
@@ -44,8 +44,8 @@ If you're running it within the repo (i.e. `cd pizza-discord-bots`), you can use
 pipreqs .  --force
 ```
 
-`--force` is used to overwrite existing file.
+`--force` is used to overwrite existing file
 
-## Run unit tests
+## Run Unit Tests
 
 TODO
