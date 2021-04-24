@@ -13,7 +13,7 @@ app = Flask('')
 
 @app.route('/')
 def home():
-    return "I am alive! Molto Bene!"
+    return "Super Pizza Trainer is alive! Molto Bene!"
 
 
 def run():
