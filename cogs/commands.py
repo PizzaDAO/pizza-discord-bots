@@ -13,8 +13,8 @@ class Commands(commands.Cog):
 
     @commands.command(aliases=["mc"])
     async def member_count(self, ctx):
-        logger.info("member count at {0}".format(ctx.guild.member_count))
-        await ctx.channel.send("Total Members: {0}".format(ctx.guild.member_count))
+        logger.info("member count: {0}".format(ctx.guild.member_count))
+        await ctx.channel.send("Member Count: {0}".format(ctx.guild.member_count))
 
     @commands.command(aliases=["csv"])
     async def download_csv(self, ctx):

@@ -5,6 +5,3 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-    env_file: ./.env
-    entrypoint: ['python', main.py]
-  
