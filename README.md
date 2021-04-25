@@ -32,20 +32,7 @@ https://super-pizza-trainer.azurewebsites.net/
 
 Because we have no intermediary stages (i.e. dev, staging, qa, etc.) you need to ensure the image you build locally works.
 I suggest creating a separate discord server (it's free) and spinning up a new bot that you can use to test your changes.
-Simply do the following once you have a new discord server:
-
-1. Create a new bot [here](https://discord.com/developers/applications)
-2. Apply the same permissions as the bot you are modifying
-3. Create a `.env` file
-4. Add the following env variables
-
-   - `TOKEN=<your-new-test-bot-token-hurr>`
-   - `WEBSITES_PORT=8080`
-
-5. Create and start all the services by running the following command:
-   `docker-compose up --build`
-6. Manually test away!
-7. Oh and add unit tests! :)
+Please refer to the [Testing](https://github.com/PizzaDAO/pizza-discord-bots#testing) section below.
 
 ## Updating Requirements
 
@@ -75,6 +62,24 @@ pipreqs .  --force
 
 `--force` is used to overwrite existing file
 
-## Run Unit Tests
+## Testing
+
+### Unit Tests
 
 TODO
+
+### Manual Testing
+
+Simply do the following once you have a new discord server:
+
+1. Create a new bot [here](https://discord.com/developers/applications)
+2. Apply the same permissions as the bot you are modifying
+3. Create a `.env` file
+4. Add the following env variables
+
+   - `TOKEN=<your-new-test-bot-token-hurr>`
+   - `WEBSITES_PORT=8080`
+
+5. Create and start all the services by running the following command:
+   `docker-compose up --build`
+6. Manually test away!
