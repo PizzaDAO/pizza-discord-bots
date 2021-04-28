@@ -24,7 +24,7 @@ WELCOME_MSGS = [
     "Where's {username}?  In the server!",
     "{username} hopped into the server. Kangaroo!",
     "{username} just showed up. Hold my beer.",
-    "Never gonna give {username} up. Never gonna let {username} down.",
+    "Never gonna give {username} up. Never gonna let {username} down. Never gonna ranncchhh around and desert uuuu.",
     "We've been expecting you {username}.",
     "{username} is here, as the prophecy foretold.",
     "{username} is here to kick butt and chew bubblegum. And {username} is all out of gum."
