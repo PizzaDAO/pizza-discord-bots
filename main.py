@@ -28,7 +28,7 @@ def web_app():
 def bot():
     intents = discord.Intents.default()
     intents.members = True
-    bot = commands.Bot(command_prefix='$', intents=intents)
+    bot = commands.Bot(command_prefix='$', intents=intents, help_command = None)
 
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py") and filename != "__init__.py":
