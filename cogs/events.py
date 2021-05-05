@@ -1,3 +1,4 @@
+import discord
 import logging
 from discord.ext import commands
 from datetime import datetime
@@ -15,6 +16,9 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         logger.info("logged in as {0.user}".format(self.bot))
+        print("Bot Is Ready")
+        await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='People Eat Pizza'))
+#Change the line above for the status
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
