@@ -8,6 +8,9 @@ logger = logging.getLogger(__name__)
 
 
 class Commands(commands.Cog):
+    """
+    """
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -15,7 +18,7 @@ class Commands(commands.Cog):
     async def mc(self, ctx):
         """
         Shows The Member Count Of The Pizza Dao Discord
-        """ 
+        """
         logger.info("member count: {0}".format(ctx.guild.member_count))
         await ctx.channel.send("Member Count: {0}".format(ctx.guild.member_count))
 
@@ -23,7 +26,7 @@ class Commands(commands.Cog):
     async def csv(self, ctx):
         """
         Sends the Avatar CSV file
-        """ 
+        """
         logger.info("generating csv file '{0}'".format(AVATAR_CSV_FILE))
         csv_data = []
         csv_cols = ["id", "name", "nickname",  "created_at",

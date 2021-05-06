@@ -14,16 +14,13 @@ app = Flask('')
 def bot():
     intents = discord.Intents.default()
     intents.members = True
-    bot = commands.Bot(command_prefix='$', intents=intents, help_command = None)
+    bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
 
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py") and filename != "__init__.py":
             bot.load_extension(f'cogs.{filename[:-3]}')
 
-
     bot.run(os.getenv('TOKEN'))
-
-
 
 
 @app.route('/')
@@ -38,6 +35,7 @@ def run():
 def web_app():
     t = Thread(target=run)
     t.start()
+
 
 def main():
     load_dotenv()

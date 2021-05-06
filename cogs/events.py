@@ -9,6 +9,12 @@ logger = logging.getLogger(__name__)
 
 
 class Events(commands.Cog):
+    """
+    Handles the following events: 
+    - Bot Start Up: Sets bot activity.
+    - New Member: Greets new members.
+    """
+
     def __init__(self, bot):
         self.bot = bot
         self._last_member_join_timestamp = datetime.min
@@ -16,9 +22,8 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         logger.info("logged in as {0.user}".format(self.bot))
-        print("Bot Is Ready")
         await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='People Eat Pizza'))
-#Change the line above for the status
+        # Change the line above for the status
 
     @commands.Cog.listener()
     async def on_member_join(self, member):

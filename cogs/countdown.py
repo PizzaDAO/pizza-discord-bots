@@ -8,6 +8,9 @@ logger = logging.getLogger(__name__)
 
 
 class Countdown(commands.Cog):
+    """
+    """
+
     def __init__(self, bot):
         self.bot = bot
         year = datetime.datetime.now().year
