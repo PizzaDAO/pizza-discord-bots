@@ -16,6 +16,7 @@ class Help(commands.MinimalHelpCommand):
     async def send_bot_help(self, mapping):
         em = discord.Embed(title = "Help", description = "Use $help <command> for extended information on a command. (Case Sensitive)")
         for cog, commands in mapping.items():
+            cog_name = "HelpCog"
             command_names = [c.name for c in await self.filter_commands(commands, sort=True)]
             if command_names: 
                 cog_name = getattr(cog, "qualified_name", "No Category")
