@@ -11,7 +11,7 @@ class GifCog(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         if not message.author.bot:
-            if message.channel.id == (812097286476922943):
+            if message.channel.id == (814164220903161917):
                 if self.counter == 9:
 
                     random_gif = self.random_gifs
