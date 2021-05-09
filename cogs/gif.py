@@ -20,7 +20,7 @@ RANDOM_GIFS = [
 NEWB_CHAT_ID = 814164220903161917
 MESSAGES_BETWEEN_GIFS = 9
 
-class GifCog(commands.Cog):
+class Gif(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.reset_countdown()
@@ -43,4 +43,4 @@ class GifCog(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(GifCog(bot))
+    bot.add_cog(Gif(bot))
