@@ -83,3 +83,31 @@ Simply do the following once you have a new discord server:
 5. Create and start all the services by running the following command:
    `docker-compose up --build`
 6. Manually test away!
+
+### Intro to Git and GitHub
+
+If you're new to contributing to open source projects and/or projects with many different contributors, being familiar with Git is basically a must. There are several version control systems but Git is probably the most common.
+
+Checkout [this article](https://product.hubspot.com/blog/git-and-github-tutorial-for-beginners) to familiarize yourself with Git.
+
+Here is the tl;dr for getting started with this repo:
+
+Initial setup:
+  1. Create a folder where you want all your pizzaDAO repos to live in `mkdir pizzaDAO`
+  2. Change into that directory `cd pizzaDAO`
+  3. Clone the repo `git clone https://github.com/PizzaDAO/pizza-discord-bots.git`
+
+You should now have the latest and greatest version of the code on your local machine. The following steps/commands will be used frequently so really try to familiarize yourself with them. This is what streamlines collaboration between many people across the world!
+
+1.  `git switch main` makes sure you are on the main branch! This is set to track the `main` branch you see on the website.
+2.  `git pull` this grabs any updates to the`main` branch on the website that others might have made. you always want to have the latest changes to avoid any unnecessary conflicts. Conflicts happen when two or more people make changes to the same code in a file. These usually are resolved on their own but sometimes, if the changes are complex, a human has to manually resolve the conflicts.
+3.  `git checkout -b <new_feature>` make sure you work on a new branch which you will push to the website.
+4.  `git add -A` once you have made all the changes and tested, add all the files that you want to commit. You can also add specific files by listing them in place of `-A` i.e. `git add file_1.py file_2.py` etc.
+5.  `git commit -m"enter a message here about the changes you made"` commits the files; add a nice short message that summarizes the changes you made.This helps devs understand the history of the code. To view past commits use `git log` and tap the space bar to scroll down; type q to exit that view. I usually do the following `git log | head -n 15` where -n is the # of lines you want to view starting from the top. 15 is usually enough to view the last 2-3 commits.
+6.  `git push -u origin <new_feature_branch>` where `new_feature_branch` is whatever you named your branch in `step 3` above.
+7.  Finally, go to the website and create a Pull Request (PR) request from `new_feature_branch` into `main`. Enter a short descriptive title and fill out the description with any relevant details/questions/concerns you have regarding the PR. Tag someone for a review and let them give you feedback; if it's good to go, they will approve and merge.
+
+If changes are requested, simply make the changes on the same branch and start from step 4 above to push the updates! It will update the same PR so ignore step 7. Please don't create a new PR since we want to maintain all of the feedback in one location so that if many people are reviewing it, they are aware of why certain changes have been made.
+
+
+For a deeper dive into Git, checkout thier website: https://git-scm.com/
