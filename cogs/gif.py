@@ -28,7 +28,7 @@ class Gif(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if not message.author.bot and message.channel.id == NEWB_CHAT_ID:
+        if message.author.bot and message.channel.id == NEWB_CHAT_ID:
             if self.countdown == 0:
                 await message.channel.send(random.choice(RANDOM_GIFS))
                 self.reset_countdown()
