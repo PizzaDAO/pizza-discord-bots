@@ -15,7 +15,7 @@ RANDOM_GIFS = [
     "https://cdn.discordapp.com/attachments/655487776657244172/839677394402934804/4fd1a1b6937ada0cf5a6976b9be45e74.png",
     "https://cdn.discordapp.com/attachments/655487776657244172/839678229714829352/image0.gif",
     "https://cdn.discordapp.com/attachments/655487776657244172/839678984412725248/giphy.gif",
-    "https://media.tenor.co/videos/09e1227640bdb420030aa26f690a5e16/mp4",
+    "https://tenor.com/view/charles-michel-farles-mifel-coucou-charles-pizza-cowboy-gif-12249271",
 ]
 NEWB_CHAT_ID = 814164220903161917
 MESSAGES_BETWEEN_GIFS = 9
