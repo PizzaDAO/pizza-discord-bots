@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 from pathlib import Path
 from utils import clean_up
-from constants import DISCORD_PROJECTS
+from constants import DISCORD_PROJECTS_CHAN_ID
 
 logger = logging.getLogger(__name__)
 
@@ -41,8 +41,10 @@ class Images(commands.Cog):
             await ctx.send(file=discord.File(zip_file_path))
         except discord.errors.HTTPException as err:
             await ctx.channel.send("Oops, someone dropped the pizza on dis one! We ran into the following error: `{0}`".format(err) +
-                                   "\nPlease reach out to the folks over at <#{0}> for help.".format(DISCORD_PROJECTS))
-
+                                   "\nPlease reach out to the folks over at <#{0}> for help.".format(DISCORD_PROJECTS_CHAN_ID))
+        else:
+            await ctx.channel.send("Oops, someone dropped the pizza on dis one and we have no clue why :scream:" +
+                                   "\nPlease reach out to the folks over at <#{0}> for help.".format(DISCORD_PROJECTS_CHAN_ID))
         # remove all images and zip file
         clean_up(images_dir, zip_file_path)
 
