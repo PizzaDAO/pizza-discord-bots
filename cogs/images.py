@@ -22,9 +22,11 @@ class Images(commands.Cog):
         project_dir = str(Path(__file__).parent.parent)
         images_dir = project_dir + "/data/images/"
 
+        count = 0
         async for message in ctx.channel.history():
-            for count, attachment in enumerate(message.attachments, start=1):
+            for attachment in message.attachments:
                 if any(attachment.filename.lower().endswith(image) for image in image_types):
+                    count += 1
                     file_name, file_type = attachment.filename.split(".")
                     file_name += ("_" + str(count) + "." + file_type)
                     file_path = images_dir + file_name
