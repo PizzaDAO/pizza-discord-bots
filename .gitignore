@@ -140,5 +140,7 @@ cython_debug/
 # data dir
 data/*
 !data/.gitkeep 
+!data/images/
+!data/videos/
 
 .vscode/

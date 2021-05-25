@@ -1,5 +1,7 @@
 import random
 import csv
+import os
+import shutil
 from datetime import datetime
 from constants import AVATAR_CSV_FILE, THRESHOLD, WELCOME_MSGS, JOIN_DA_MAFIA_CHAN_ID
 
@@ -32,3 +34,25 @@ def time_exceeded(last, now=datetime.now()):
 
     hours = (now - last).total_seconds() / (60 * 60)
     return (hours >= THRESHOLD)
+
+
+def remove(file_path):
+    """Delete a file from a directory"""
+    return os.remove(file_path)
+
+
+def remove_all(directory):
+    """Delete all files, subdirectories, and symbolic links from a directory"""
+    for files in os.listdir(directory):
+        path = os.path.join(directory, files)
+        try:
+            shutil.rmtree(path)
+        except OSError:
+            remove(path)
+    return
+
+
+def clean_up(multimedia_dir, zipfile_path):
+    remove_all(multimedia_dir)  # images/videos
+    remove(zipfile_path)  # zipfile
+    return
