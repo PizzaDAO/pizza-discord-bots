@@ -1,8 +1,9 @@
 import logging
 import datetime
 import asyncio
+import random
 from discord.ext import tasks, commands
-from constants import ANNOUNCEMENTS_CHAN_ID
+from constants import ANNOUNCEMENTS_CHAN_ID, HYPE_MSGS
 
 logger = logging.getLogger(__name__)
 
@@ -10,10 +11,15 @@ logger = logging.getLogger(__name__)
 class Countdown(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        year = datetime.datetime.now().year
-        self.bitcoin_pizza_day = datetime.date(year, 5, 22)  # May 22, 2021 etc
+        year = datetime.datetime.utcnow().year
+        self.bitcoin_pizza_day = datetime.date(year, 5, 22)
+        self.tau_day = datetime.date(year, 6, 28)
         self.target_hour = 15  # 3pm UTC / 11am EDT / 10am CDT / 8am PDT
-        self.message = "Hello @everyone!! Today is {date}, which means there are **{days} DAYS until May 22**, Bitcoin Pizza Day! Let's goooo!"
+        self.messages = {
+            "0522": "Hello @everyone! Today is {date}, which means there are **{days} DAYS until May 22nd**, Bitcoin Pizza Day! {hype}",
+            "0628": "Hello @everyone! Today is {date}, which means there are **{days} DAYS until June 28th**, Tau Day! {hype}",
+            "default": "Oops, looks like my circuits got mixed up. Today is {date}; days is {days}; hype message is {hype}. Haaalp debug me!",
+        }
         self.announcement.start()
 
     def cog_unload(self):
@@ -21,11 +27,28 @@ class Countdown(commands.Cog):
 
     @tasks.loop(hours=24)
     async def announcement(self):
+        # bitcoin pizza day, tau day, or next year
         today = datetime.date.today()
-        days = (self.bitcoin_pizza_day - today).days
+        target_day = datetime.date(1959, 10, 31)
+        if today <= self.bitcoin_pizza_day:
+            target_day = self.bitcoin_pizza_day
+        elif today <= self.tau_day:
+            target_day = self.tau_day
+        else:
+            target_day = datetime.date(today.year + 1, 5, 22)  # next year
 
+        days = (target_day - today).days
+        if days > 42:
+            # start countdown for next years bitcoin pizza days 42 days before
+            # this is to limit noise in channel; 30 days is too boring. 42 is the answer.
+            return
+
+        message_key = target_day.strftime("%m%d")
         today_str = today.strftime("%B %d, %Y")
-        message = self.message.format(date=today_str, days=(days-1))
+        hype_msg = HYPE_MSGS[random.randint(0, len(HYPE_MSGS)-1)]
+        message = self.messages.get(message_key, self.messages["default"]).format(
+            date=today_str, days=days, hype=hype_msg)
+
         logger.info("making announcement with message: '{0}'".format(message))
         announcements_chan = self.bot.get_channel(ANNOUNCEMENTS_CHAN_ID)
         await announcements_chan.send(message)

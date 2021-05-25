@@ -30,3 +30,14 @@ WELCOME_MSGS = [
     "{username} is here, as the prophecy foretold.",
     "{username} is here to kick butt and chew bubblegum. And {username} is all out of gum."
 ]
+
+HYPE_MSGS = [
+    "Let's goooo!!!",
+    "Legggooo!!!!!",
+    "Let's not let these pies go stale!",
+    "A pie a day...is less than 2 pies a day...NEED MORE PIES!! :)",
+    "Idk bout ya'll but this year im bullish af!!",
+    "I amore you all! Never forget this!",
+    "You already know!!!",
+    "Àndale àndale!"
+]
