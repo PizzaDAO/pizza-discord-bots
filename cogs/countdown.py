@@ -9,8 +9,10 @@ logger = logging.getLogger(__name__)
 
 EVENTS = [
     PizzaDaoEvent(5, 22,  "Bitcoin Pizza Day"),
-    PizzaDaoEvent(6, 28, "Tau Day")
+    # PizzaDaoEvent(6, 28, "Tau Day") # disabled until event is official
 ]
+MIN_DAYS = 42
+MAX_DAYS = 365
 
 
 class Countdown(commands.Cog):
@@ -25,11 +27,9 @@ class Countdown(commands.Cog):
 
     @tasks.loop(hours=24)
     async def announcement(self):
-        min_days = 42
         next_event = None
         for event in EVENTS:
-            days_until_event = event.days_until_event()
-            if days_until_event <= min_days:
+            if event.days_until_event() <= min(MIN_DAYS, next_event.days_until_event() if next_event is not None else MAX_DAYS):
                 next_event = event
 
         if next_event is not None:
