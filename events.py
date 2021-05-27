@@ -4,10 +4,11 @@ from utils import get_random_hype_msg
 
 class PizzaDaoEvent:
 
-    def __init__(self, month, day, name):
+    def __init__(self, month, day, name, enabled=True):
         self.month = month
         self.day = day
         self.name = name
+        self.enabled = enabled
         self.today = datetime.date.today()
         self.event_date = datetime.date(self.today.year, self.month, self.day)
 
