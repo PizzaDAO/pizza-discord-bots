@@ -2,18 +2,22 @@ import logging
 import datetime
 import asyncio
 from discord.ext import tasks, commands
+from events import PizzaDaoEvent
 from constants import ANNOUNCEMENTS_CHAN_ID
 
 logger = logging.getLogger(__name__)
+
+EVENTS = [
+    PizzaDaoEvent(5, 22,  "Bitcoin Pizza Day"),
+    PizzaDaoEvent(6, 28, "Tau Day")
+]
 
 
 class Countdown(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        year = datetime.datetime.now().year
-        self.bitcoin_pizza_day = datetime.date(year, 5, 22)  # May 22, 2021 etc
+        year = datetime.datetime.utcnow().year
         self.target_hour = 15  # 3pm UTC / 11am EDT / 10am CDT / 8am PDT
-        self.message = "Hello @everyone!! Today is {date}, which means there are **{days} DAYS until May 22**, Bitcoin Pizza Day! Let's goooo!"
         self.announcement.start()
 
     def cog_unload(self):
@@ -21,14 +25,18 @@ class Countdown(commands.Cog):
 
     @tasks.loop(hours=24)
     async def announcement(self):
-        today = datetime.date.today()
-        days = (self.bitcoin_pizza_day - today).days
+        min_days = 42
+        next_event = None
+        for event in EVENTS:
+            days_until_event = event.days_until_event()
+            if days_until_event <= min_days:
+                next_event = event
 
-        today_str = today.strftime("%B %d, %Y")
-        message = self.message.format(date=today_str, days=(days-1))
-        logger.info("making announcement with message: '{0}'".format(message))
-        announcements_chan = self.bot.get_channel(ANNOUNCEMENTS_CHAN_ID)
-        await announcements_chan.send(message)
+        if next_event is not None:
+            msg = event.message()
+            announcements_chan = self.bot.get_channel(ANNOUNCEMENTS_CHAN_ID)
+            logger.info("making announcement with message: '{0}'".format(msg))
+            await announcements_chan.send(msg)
 
     @announcement.before_loop
     async def before_announcement(self):
