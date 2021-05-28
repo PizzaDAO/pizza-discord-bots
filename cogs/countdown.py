@@ -9,15 +9,16 @@ logger = logging.getLogger(__name__)
 
 EVENTS = [
     PizzaDaoEvent(5, 22,  "Bitcoin Pizza Day"),
-    PizzaDaoEvent(6, 28, "Tau Day")
+    PizzaDaoEvent(6, 28, "Tau Day", False)
 ]
+MIN_DAYS = 42
 
 
 class Countdown(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         year = datetime.datetime.utcnow().year
-        self.target_hour = 15  # 3pm UTC / 11am EDT / 10am CDT / 8am PDT
+        self.target_hour = 15  # 3pm UTC / 11am EDT / 10am CDT / 8am PDT / 5pm Italy / 12am Japan
         self.announcement.start()
 
     def cog_unload(self):
@@ -25,15 +26,15 @@ class Countdown(commands.Cog):
 
     @tasks.loop(hours=24)
     async def announcement(self):
-        min_days = 42
         next_event = None
+        days_until_next_event = MIN_DAYS
         for event in EVENTS:
-            days_until_event = event.days_until_event()
-            if days_until_event <= min_days:
+            if event.enabled and 0 <= event.days_until_event() <= days_until_next_event:
                 next_event = event
+                days_until_next_event = next_event.days_until_event()
 
         if next_event is not None:
-            msg = event.message()
+            msg = next_event.message()
             announcements_chan = self.bot.get_channel(ANNOUNCEMENTS_CHAN_ID)
             logger.info("making announcement with message: '{0}'".format(msg))
             await announcements_chan.send(msg)
