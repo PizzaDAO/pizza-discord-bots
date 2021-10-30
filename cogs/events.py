@@ -29,7 +29,7 @@ class Events(commands.Cog):
 
         msg = generate_welcome_message(member.mention)
         if time_exceeded(self._last_member_join_timestamp, now):
-            msg += "\nDon't forget to head over to <#{0}> to pick ur titles then report here for ur mafia name".format(
+            msg += "\nDon't forget to head over to <#{0}> to pick ur turtles then report here for ur mafia name".format(
                 JOIN_DA_MAFIA_CHAN_ID)
             self._last_member_join_timestamp = now
 
