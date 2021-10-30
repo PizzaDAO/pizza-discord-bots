@@ -9,7 +9,8 @@ logger = logging.getLogger(__name__)
 
 EVENTS = [
     PizzaDaoEvent(5, 22,  "Bitcoin Pizza Day"),
-    PizzaDaoEvent(6, 28, "Tau Day", False)
+    PizzaDaoEvent(6, 28, "Tau Day", False),
+    PizzaDaoEvent(11, 2, "NFT.NYC 2021 Drop") # TODO - add exp date for one-off events or just update code and delete this line after event
 ]
 MIN_DAYS = 42
 
@@ -18,7 +19,7 @@ class Countdown(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         year = datetime.datetime.utcnow().year
-        self.target_hour = 15  # 3pm UTC / 11am EDT / 10am CDT / 8am PDT / 5pm Italy / 12am Japan
+        self.target_hour = 2  # 2am UTC / 10pm EDT / 7pm PDT / 4am Italy / 11am Japan
         self.announcement.start()
 
     def cog_unload(self):

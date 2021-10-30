@@ -16,4 +16,4 @@ class PizzaDaoEvent:
         return (self.event_date - self.today).days
 
     def message(self) -> str:
-        return f"Hello @everyone! Today is {self.today}, which means there are **{self.days_until_event()} DAYS until {self.month} {self.day}, {self.today.year}**, {self.name}! {get_random_hype_msg()}"
+        return f"Hello everyone! Today is {self.today}, which means there are **{self.days_until_event()} DAYS until {self.month} {self.day}, {self.today.year}**, {self.name}! {get_random_hype_msg()}"
