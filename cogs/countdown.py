@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 EVENTS = [
     PizzaDaoEvent(5, 22,  "Bitcoin Pizza Day"),
     PizzaDaoEvent(6, 28, "Tau Day", False),
-    PizzaDaoEvent(11, 2, "NFT.NYC 2021 Drop") # TODO - add exp date for one-off events or just update code and delete this line after event
+    PizzaDaoEvent(11, 2, "NFT.NYC 2021 Drop", False) # TODO - add exp date for one-off events or just update code and delete this line after event
 ]
 MIN_DAYS = 42
 
