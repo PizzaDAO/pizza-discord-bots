@@ -3,7 +3,7 @@ import csv
 import os
 import shutil
 from datetime import datetime
-from constants import AVATAR_CSV_FILE, THRESHOLD, WELCOME_MSGS, JOIN_DA_MAFIA_CHAN_ID, HYPE_MSGS
+from constants import AVATAR_CSV_FILE, THRESHOLD, WELCOME_MSGS, HYPE_MSGS
 
 
 def get_member_data(member):

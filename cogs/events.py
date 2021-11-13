@@ -2,7 +2,7 @@ import discord
 import logging
 from discord.ext import commands
 from datetime import datetime
-from constants import DEFAULT_NAME, JOIN_DA_MAFIA_CHAN_ID, NOOB_CHAT_CHAN_ID
+from constants import DEFAULT_NAME, JOIN_DA_MAFIA_CHAN_ID, MAFIA_ACTIVITY_CHAN_ID
 from utils import generate_welcome_message, time_exceeded
 
 logger = logging.getLogger(__name__)
@@ -33,7 +33,7 @@ class Events(commands.Cog):
                 JOIN_DA_MAFIA_CHAN_ID)
             self._last_member_join_timestamp = now
 
-        noob_chat_chan = self.bot.get_channel(NOOB_CHAT_CHAN_ID)
+        noob_chat_chan = self.bot.get_channel(MAFIA_ACTIVITY_CHAN_ID)
         await noob_chat_chan.send(msg)
 
 
